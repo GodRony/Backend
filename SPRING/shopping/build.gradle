@@ -1,0 +1,56 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '3.4.1'
+	id 'io.spring.dependency-management' version '1.1.7'
+}
+
+group = 'com.naver'
+version = '0.0.1-SNAPSHOT'
+
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(17)
+	}
+}
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+
+
+dependencies {
+	// Spring Boot Web
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+
+	// Lombok
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
+
+	// JUnit 5
+	testImplementation 'org.junit.jupiter:junit-jupiter:5.10.0'
+
+	// AssertJ
+	testImplementation 'org.assertj:assertj-core:3.24.2'
+
+	// Spring Boot Test
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+	// 이 부분은 추가로 작성
+	testCompileOnly 'org.projectlombok:lombok'
+	testAnnotationProcessor 'org.projectlombok:lombok'
+	// 여기까지
+
+	implementation 'jakarta.inject:jakarta.inject-api:2.0.1'
+}
+
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
