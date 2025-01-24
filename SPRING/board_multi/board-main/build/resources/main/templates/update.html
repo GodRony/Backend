@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>update</title>
+</head>
+<body>
+<form action="/board/update" method="post" name="updateForm">
+  <input type="hidden" name="id" th:value="${boardUpdate.id}">
+  <!-- th:value (타임리프가 제공) :
+   model.addAttribute("boardUpdate", boardDTO);
+   Controller에서 뷰어(html)로 넘겨줄때 넘겨준 모델임. 그게 boardUpdate 요거다
+   -->
+  writer: <input type="text" name="boardWriter" th:value="${boardUpdate.boardWriter}" readonly> <br>
+  <!-- 수정하지 못하게 하고싶을때, 입력을 할 수 없을때... 그냥 보여주고만싶을때 -->
+  pass: <input type="text" name="boardPass" id="boardPass"> <br>
+  <!-- 검증을 하고싶을땐 th없이 -->
+  title: <input type="text" name="boardTitle" th:value="${boardUpdate.boardTitle}"> <br>
+  contents: <textarea name="boardContents" cols="30" rows="10" th:text="${boardUpdate.boardContents}"></textarea> <br>
+  <input type="hidden" name="boardHits" th:value="${boardUpdate.boardHits}">
+  <!-- 필요한 input이 아니더라도 반드시 정보를 줘야함.. 근데 이럴경우는 hidden으로 줌 -->
+  <input type="button" value="글수정" onclick="boardUpdate()">
+  <!-- onClick을 하면 자바스크립트 함수를 호출한다 이것도 ""로 호출함.. 신기 -->
+</form>
+<script th:inline="javascript">
+  const boardUpdate = () => {
+    const pass = [[${boardUpdate.boardPass}]];
+    const inputPass = document.getElementById("boardPass").value;
+    if (pass == inputPass) {
+      document.updateForm.submit();
+    } else {
+      alert("비밀번호가 일치하지 않습니다!");
+    }
+  }
+</script>
+</body>
