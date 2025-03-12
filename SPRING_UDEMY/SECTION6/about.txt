@@ -1,0 +1,94 @@
+########### 섹션 6 ###########
+## JPA와 Hibernate ##
+1. JPA : 
+정의 : 데이터베이스를 다루는 자바 표준 API
+역할 : 인터페이스 (규칙정의)
+SQL 자동생성 : 가능
+코드 의존성 : 특정 구현체 없이 가능
+DB 변경 용이성 : 높음
+--
+객체와 데이터베이스를 자동으로 매핑 @Entitiy
+SQL을 직접 쓰지 않고 자바 코드로 데이터베이스를 다룰 수 있도록 도와주는 기술 (MySQL, PostgreSQL 등)
+핵심 :
+@Entity: 이 클래스가 데이터베이스 테이블과 매핑됨
+@Id: 기본 키 (Primary Key) 지정
+@GeneratedValue: 자동 증가 값 설정 (IDENTITY는 DB가 자동 증가 처리)
+
+2. Hibernate :
+정의 : JPA의 구현체 중 하나 (ORM 프레임워크)
+역할 : JPA를 실제로 구현한 라이브러리
+SQL 자동생성 : 가능 (JPA보다 더 많은 기능 제공)
+코드 의존성 : Hibernate에 의존해야 함
+DB 변경 용이성 : 낮음 (Hibernate에 종속됨)
+--
+JPA는 "어떻게 데이터베이스를 다룰지 규칙(설계도)" 
+Hibernate는 "JPA 규칙을 실제로 구현한 프로그램(라이브러리)"
+그래서 JPA(Entity,Id등등..)만들고 실제로 동작하게 하는게 Hibernate
+
+## 여러방식 비교 ##
+1. JDBC
+ex. // JDBC 방식
+Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/test", "user", "password");
+String sql = "SELECT * FROM users WHERE id = ?";
+PreparedStatement pstmt = conn.prepareStatement(sql);
+pstmt.setLong(1, 1);
+ResultSet rs = pstmt.executeQuery();
+while (rs.next()) {
+    System.out.println("User Name: " + rs.getString("name"));
+}
+rs.close();
+pstmt.close();
+conn.close();
+처럼 Connection, PreparedStatement, ResultSet 등 직접 관리해야 함.
+SQL을 직접 작성해야 해서 코드가 복잡하고 길어짐.
+DB가 바뀌면(예: MySQL → PostgreSQL) SQL 문법도 바꿔야 함.
+
+2. SPRING JDBC
+  private JdbcTemplate springJdbcTemplate;
+    private static String INSERT_QUERY =
+            """
+                    insert into course(id,name,author)
+                    values(?,?,?);
+            """;
+    public void insert(Course course){
+        springJdbcTemplate.update(INSERT_QUERY,
+                course.getId(),course.getName(),course.getAuthor());
+         }
+자바 코드는 간단한데 쿼리는 많이 작성해야함
+
+3. JPA 방식
+@Entity
+public class User {
+    @Id @GeneratedValue
+    private Long id;
+    private String name;
+}
+@Repository
+@Transactional // JPA로 실행하려면 Transactional를 추가해야함
+public class CourseJpaRepository {
+	@PersistenceContext
+	private EntityManager entityManager;
+	public void insert(Course course){
+        		entityManager.merge(course);
+    	}
+JPA는 객체 중심으로 데이터를 다루는 방식이라 SQL을 직접 다루는일은 적음.
+그리고 JPA는 SQL을 직접 쓰지 않아도 자동처리됨. 즉 쿼리 작성을 안함!
+Ex. course 엔터티를 데이터테이블의 course와 매핑시킴.
+작동방식은..
+EntitiyManager가 먼저 특정 ID를 가진 행이 없는지 확인하고나서야 insert 수행 delete도 마찬가지로 행 검색수 delete수행
+
+4. Spring Data JPA
+EntitiyManager도 신경쓸 필요가 없다.
+그냥 전부 다해줌
+
+public interface CourseSpringDataJpaRepository extends JpaRepository<Course,Long> {}
+ repository.save(new Course(3,"SpringDataJpa 3","aaaa"));
+굉장히 간단함 인터페이스만 써주면됌
+
+
+### Hibernate vs JPA ###
+JPA  
+: API와 같음, 어떻게 엔터티를 정의할것인지 , 기본키는 @Id로, 속성 매핑은 @Column, 그리고 EntitiyManager를
+활용하는것까지 가능해짐, 객체를 테이블로 매핑하는 방식을..
+Hibernate
+: JPA의 구현체 
