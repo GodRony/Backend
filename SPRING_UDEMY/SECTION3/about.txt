@@ -1,0 +1,75 @@
+########### 섹션 3 ###########
+섹션 3 - 5단계 
+1 . @Component 
+얘를 클래스에 추가하는 경우 클래스의 인스턴스는 Spring 프레임워크가 관리
+얘를 추가할때마다 특정 클래스가 컴포넌트 스캔에 있다면 
+해당 클래스의 인스턴스 즉 Spring Bean이 생성되고 Spring프레임워크에 의해 관리됨
+
+2 . Dependency
+앞서 GameRunner에 GamingConsole에 필요했는데 (Console에는 Mario,SuperContra,PacMan이 있음)
+이 경우 Mario는 GameRunner의 의존성임
+
+3. ComponentScan
+스프링 프레임워크가 컴포넌트 클래스를 찾을 수 있다
+
+4. Dependency Injection
+첫번째로는 Scan을 통해서 모든 구성 요소를 찾으려고함
+그리고 이 컴포넌트의 의존성이 무엇인지 식별하고 모두 와이어링하게 됨
+이 전체 프로세스를 의존성 주입이라고 함. 
+Bean과 의존성을 식별하고 모두 와이어링 하는 작업
+
+
+<< 관련 용어>>
+1. IOC : 제어반전
+: 객체를 생성하고 와이어링 하는 실제 작업
+var game = new PacmanGame() // 1. 객체 생성
+var gameRunner = new GameRunner(game); // 객체생성 + 와이어링 작업
+// game(PacmanGame)은 gameRunner의 의존성임
+이것을 
+컴포넌트 스캔을 정의하고 @Component로 정의하고 와이어링은 Spring이 함
+이처럼 명시적인 코드 작성에서 Spring 프레임워크로 넘어갔는데 이를 제어 반전이라고 함 
+
+2. Spring Bean
+스프링 프레임워크에 관리되는 객체
+
+3. IOC Container
+Bean의 생명 주기와 의존성을 관리하는 Spring 프레임워크의 컴포넌트임
+타입 : 
+ApplicationContext 는 많은 복잡한 기능을 제공하지만
+BeanFactory는 더 간단한 기능을 제공
+
+4. Autowiring 
+Spring Bean에 대한 의존성의 와이어링 프로세스를 말함
+Spring이 특정 Bean을 만남면 Bean이 필요한 의존성이 무엇인지 식별하려고 한다.
+ex
+GameRunner 클래스에서
+public GameRunner( GamingConsole game){} 이라는 생성자가 있을때,
+game(GamingConsole)은 GameRunner의 의존성이고 game객체가 필요하다는것을 알 수 있음
+
+섹션 3 - 6단계
+@Component와 @Bean의 차이
+Compoent :
+클래스 상단 위에 사용
+생성자 주입, setter 주입 , 필드 주입 중 하나 사용가능
+Component가 Bean보다 사용이 간단함(클래스 위에 한번만 정의해주면 되니까)
+SpringFamework가 bean생성
+내부에서 컴포넌트 클래스에 대한 코드를 작성하고 
+컴포넌트 클래스에대한 bean을 작성한다면 @component가 유리
+Bean :
+특정 메소드에 적용. 일반적으로 Spring Configuration 클래스 메서드에서 사용됨.
+특정 메소드를 호출해서 자동와이어링 하거나 매개변수를 사용할 수 있음
+ex. person2MethodCall(Address address2) , person3MethodCall(Address address3) ,
+다른 패키지에서 "address3"이렇게 사용 가능.
+너가 bean을 직접 생성함
+비지니스 로직을 커스텀할때, 제3자 라이브러리로 Bean을 인스턴스화 할때
+bean을 생성하기 전에 수행해야하는 로직이 많을때
+
+
+섹션 3- 7단계
+Web, Business, Data 레이어로 구성됨
+Web -> Business -> Data 순으로 의존됨
+with Spring Frame
+1. 개발자가 비지니스 로직에 집중할 수 있음
+2. 스프링프레임이 객체 생명주기를 맡음
+그냥 @Component로 컴포넌트를 표시하고 @Autowired로 의존성을 표시하면 됨.
+그러고나면 
