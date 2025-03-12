@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context" xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd"> <!-- bean definitions here -->
+    <bean id = "name" class = "java.lang.String">
+        <constructor-arg value = "Ranga"/>
+    </bean>
+    <bean id = "age" class = "java.lang.Integer">
+        <constructor-arg value = "35"/>
+    </bean>
+<!--    <context:component-scan-->
+<!--            base-package="com.in28minutes.learn_spring_framework.game"/>-->
+
+    <bean id="game" class="com.in28minutes.learn_spring_framework.game.PacmanGame"/>
+    <bean id="gameRunner" class="com.in28minutes.learn_spring_framework.game.GameRunner">
+        <constructor-arg ref="game"/>
+<!--        위에서 만든 game bean을 gameRunner에서 인자로 주었다-->
+    </bean>
+
+</beans>
+<!--        // 이전에는 Xml로 의존성을 주입했지만 이젠 거의 사용하지 않고 Spring의 에노테이션을 사용한다-->
