@@ -1,4 +1,23 @@
+## 섹션 7 ##
+1. get이 디폴트인데..
+        <form>
+            Name: <input type ="text" name="name">
+            Password: <input type ="password" name="password">
+            <input type="submit">
+        </form>
+이렇게 하면 http://localhost:8080/login?name=asdf&password=qwer 로 URL에 노출이됨
+따라서 보안상으로는 post로 하는게 좋다
+     <form method = "post"> 
+그렇게하면 submit해도 http://localhost:8080/login로 입력값이 노출되지않음
 
+2. Request vs Session
+Request의 value는 그 요청 페이지에만 유효함. 모델에서 넘겨준거라도 다음 페이지로 넘어가면 value가 사라짐
+Session은 다음페이지로 넘어가도 그 value가 살아남아있음 
+단 세션설정시 그 값을 사용하려는 모든 컨트롤러에도 그 SessionAttribute("value")를 넣어줘야함 사용해야함
+
+/META-INF/resources/webjars/bootstrap/5.1.3/css/bootstrap.min.css
+/META-INF/resources/webjars/bootstrap/5.1.3/js/bootstrap.min.js
+/META-INF/resources/webjars/jquery/3.6.0/jquery.min.css
 ##### Security에 대해 #####
 1. SecurityContext :
 Spring Security에서 인증(authentication) 및 권한 부여(authorization)와 
