@@ -1,6 +1,6 @@
-
-# KOR 혼자서 백엔드를 공부하면서 올린 자료와 흔적들 입니다. #
-# JP 代表的な言語としては、NodeJS と SPRING を学習しました。#
+# BACK-END PRAICTICE #
+## KOR 혼자서 백엔드를 공부하면서 올린 자료와 흔적들 입니다. ##
+## JP 代表的な言語としては、NodeJS と SPRING を学習しました。##
 
 代表的な言語としては、NodeJS と SPRING を学習しました。
 
